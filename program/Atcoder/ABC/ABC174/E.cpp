@@ -14,31 +14,30 @@ using ll = long long;
 
 int main()
 {
-    ll n, k;
+    int n, k;
     cin >> n >> k;
-    vector<ll> a(n);
-    ll total = 0;
-    for(int i = 0; i< n; i++){
+    vector<int> a(n);
+    for(int i = 0; i < n; i++){
         cin >> a[i];
-        total += a[i];
     }
-    cout << "total: " << total << endl;
-    ll tmp = total / (n+k);
-    tmp += 1;
-    cout << "tmp: " << tmp << endl;
-    sort(a.begin(), a.end());
-    if(k == 0){
-        cout << a[n-1] << endl;
-        return 0;
+    int l = 0, r = 1000000000;
+    while(r-l>1){
+        int mid = (l+r)/2;
+        ll tot = 0;
+        // if(mid == 0){
+        //     r = 1;
+        //     break;
+        // }
+        for(int i = 0; i < n; i++){
+            int num = 0;
+            tot += (a[i]-1)/mid;
+        }
+        if(tot > k){
+            l = mid;
+        }else{
+            r = mid;
+        }
     }
-    ll ans = 0;
-    for(int i = 0; i< n; i++){
-        if(a[i] < tmp) continue;
-        ll num = a[i] / tmp;
-        if(a[i] % tmp == 0) num--;
-        if(a[i] % (num+1) == 0) ans = max(ans, a[i] / (num+1));
-        else ans = max(ans, (a[i] / (num+1)) + 1);
-    }
-    cout << ans << endl;
+    cout << r << endl;
     return 0;
 }

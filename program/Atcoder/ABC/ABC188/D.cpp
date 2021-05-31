@@ -11,40 +11,29 @@
 
 using namespace std;
 using ll = long long;
+using P = pair<ll, ll>;
 
 int main()
 {
     ll n,cost;
     cin >> n >> cost;
-    //vector<ll> table(1000000000);
-    vector<int> a(n), b(n), c(n);
-    int mx = 0;
-    int mi = 1e9;
+    vector<ll> a(n), b(n), c(n);
+    vector<P> p;
     for(int i = 0; i < n; i++){
-        //int a, b, c;
-        //cin >> a >> b >> c;
-        //a--;
         cin >> a[i] >> b[i] >> c[i];
         a[i]--;
-        mi = min(mi, a[i]);
-        mx = max(mx, b[i]);
-        // table[a] += c;
-        // table[b] -= c;
+        p.push_back({a[i], c[i]});
+        p.push_back({b[i], -c[i]});
     }
-    const int size = 1001001001;
-    vector<ll> table;
-    table.resize(size);
-    for(int i = 0; i < n; i++){
-        table[a[i]] += c[i];
-        table[b[i]] -= c[i];
-    }
-    for(ll i = mi; i < mx+1; i++){
-        if(0 < i) table[i] += table[i-1];
-        //cout << "table: " << table[i] << endl;
-    }
-    ll ans = 0;
-    for(ll i = mi; i < mx+1; i++){
-        ans += min(table[i], cost);
+    sort(p.begin(), p.end());
+    ll ans = 0, now = 0, pre = 0;
+    for(int i = 0; i < 2*n; i++){
+        ll pos = p[i].first;
+        if(pre != pos){
+            ans += min(now, cost)*(pos-pre);
+            pre = pos;
+        }
+        now += p[i].second;
     }
     cout << ans << endl;
     return 0;

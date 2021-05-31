@@ -4,55 +4,41 @@
 #include <vector>
 #include <string>
 #include <queue>
+#include <cmath>
+#include <set>
+#include <map>
+#include <cassert>
 
 using namespace std;
-
-bool is_Prime(long long p)
-{
-    if(p < 2) return false;
-    else if (p == 2)
-        return true;
-    else if (p % 2 == 0)
-        return false;
-
-    for (int i = 3; i * i <= p; i += 2)
-    {
-        if (p % i == 0)
-        {
-            return false;
-        }
-    }
-    return true;
-}
+using ll = long long;
+int p[1000005];
+int num[1000005];
 
 int main()
 {
-    long long n;
+    ll n;
     cin >> n;
-    int num = 0;
-    long long p = n;
-    //vector<int> b(sqrt(n), 0);
-
-    for (long long i = 2; i * i <= n; i++)
-    {
-        if (is_Prime(i) && p % i == 0)
-        {
-            //cout << p << endl;
-            p = p / i;
-            // cout << "p: " << p << endl;
-            // cout << "num" << num << endl;
+    vector<pair<ll, ll>> p;
+    ll tmp = n;
+    for(ll i = 2; i*i <= n; i++){
+        int num = 0;
+        while(tmp%i==0){
+            tmp /= i;
             num++;
-            //b[i]++;
-            if (p == 1)
-            {
-                break;
-            }
+        }
+        p.emplace_back(i, num);
+    }
+    if(tmp != 1) p.emplace_back(tmp, 1);
+    int ans = 0;
+    for(auto x : p){
+        int num = x.second;
+        int pos = 1;
+        while(pos <= num){
+            num -= pos;
+            pos++;
+            ans++;
         }
     }
-    if (num == 0 && n != 1)
-    {
-        num = 1;
-    }
-    cout << num << endl;
+    cout << ans << endl;
     return 0;
 }

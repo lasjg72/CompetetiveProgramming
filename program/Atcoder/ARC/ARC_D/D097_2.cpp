@@ -1,0 +1,59 @@
+#include <iostream>
+#include <algorithm>
+#include <tuple>
+#include <vector>
+#include <string>
+#include <queue>
+#include <cmath>
+#include <set>
+#include <map>
+#include <cassert>
+
+using namespace std;
+using ll = long long;
+
+struct UnionFind{
+    vector<int> par;
+    UnionFind(int n):par(n, -1){};
+    int root(int x){
+        if(par[x] < 0) return x;
+        else return par[x] = root(par[x]);
+    }
+    bool unite(int x, int y){
+        x = root(x);
+        y = root(y);
+        if(x == y) return false;
+        if(par[x] > par[y]) swap(x, y);
+        par[x] += par[y];
+        par[y] = x;
+        return true;
+    }
+    bool same(int x, int y){ return root(x)==root(y); }
+};
+
+int main()
+{
+    int n, m;
+    cin >> n >> m;
+    vector<int> p(n);
+    for(int i = 0; i < n; i++) {
+        cin >> p[i];
+        p[i]--;
+    }
+    vector<vector<int>> g(n);
+    UnionFind uf(n);
+    for(int i = 0; i < m; i++){
+        int a, b;
+        cin >> a >> b;
+        a--; b--;
+        g[a].push_back(b);
+        g[b].push_back(a);
+        uf.unite(a, b);
+    }
+    int ans = 0;
+    for(int i = 0; i < n; i++){
+        if(uf.same(i, p[i]) || p[i] == i) ans++;
+    }
+    cout << ans << endl;
+    return 0;
+}
