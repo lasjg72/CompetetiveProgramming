@@ -14,21 +14,20 @@ using ll = long long;
 
 int main()
 {
-    int n, pre;
+    int n;
     cin >> n;
-    for(int i = 0; i < n; i++){
-        int h;
-        cin >> h;
-        if(i != 0 && i != n-1){
-            if(h < pre || abs(h-pre) >= 2){
-                cout << "No" << endl;
-                return 0;
-            }
+    bool ng = false;
+    vector<int> h(n);
+    for(int i = 0; i < n; i++) cin >> h[i];
+    h[0]--;
+    for(int i = 1; i < n; i++){
+        if(h[i-1] > h[i]){
+            cout << "No" << endl;
+            return 0;
+        }else if(h[i-1] < h[i]){
+            h[i]--;
         }
-        if(i == n-1 && h >= pre) cout << "Yes" << endl;
-        else cout << "No" << endl;
-        if(h-pre == 1) pre = h-1;
-        else pre = h;
     }
+    cout << "Yes" << endl;
     return 0;
 }

@@ -23,14 +23,24 @@ int main()
             cin >> s[i][j];
         }
     }
-    vector<P> row;
-    int now = 0;
+    vector<vector<int>> ans(h, vector<int>(w));
+    int now = 1;
+    bool flag1 = false;
     for(int i = 0; i < h; i++){
+        bool flag = false;
+        if(flag1){
+            flag1 = false;
+        }
         for(int j = 0; j < w; j++){
             if(s[i][j] == '#'){
-                row.push_back({now, i});
-                now = i+1;
+                flag1 = true;
+                if(flag){
+                    now++;
+                }else{
+                    flag = true;
+                }
             }
+            ans[i][j] = now;
         }
     }
     return 0;

@@ -13,45 +13,46 @@ using namespace std;
 using ll = long long;
 
 const int INF = 1001001001;
+ll c[100005];
+vector<vector<int>> g;
+ll ans;
+ll n;
 
-int n, dat[2*100005-1];
-
-void init(int n_){
-    n = 1;
-    while(n < n_) n *= 2;
-    for(int i = 0; i < 2*n-1; i++) dat[i] = -1;
-}
-
-void update(int x, int a){
-    x += n-1;
-    dat[x] = a;
-    while(x > 0){
-        x = (x-1)/2;
-        dat[x] = max(dat[2*x+1], dat[2*x+2]);
+int dfs(int x, int p = -1){
+    bool leaf = true;
+    //cout << "x: " << x << " p: " << p << endl;
+    for(int to : g[x]){
+        if(to == p) continue;
+        leaf = false;
+        c[x] += dfs(to, x);
     }
+    if(leaf) c[x] = 1;
+    else c[x]++;
+    return c[x];
 }
 
-int query(int a, int b, int k, int l, int r){
-    if(r <= a || b <= l) return -1;
-    else if(a <= l && b >= r) return dat[k];
-    else{
-        int vl = query(a, b, 2*k+1, l, (l+r)/2);
-        int vr = query(a, b, 2*k+2, (l+r)/2, r);
-        return max(vl, vr);
+void dfs2(int x, int p = -1){
+    for(int to : g[x]){
+        if(to == p) continue;
+        //cout << "x: " << x << " to: " << to << " c[to]: " << c[to] << endl;
+        ans += c[to]*(n-c[to]);
+        dfs2(to, x);
     }
 }
 
 int main()
 {
-    int n;
     cin >> n;
-    vector<vector<int>> g(n);
-    for(int i = 0; i < n; i++){
+    g.resize(n);
+    for(int i = 0; i < n-1; i++){
         int a, b;
         cin >> a >> b;
         a--; b--;
         g[a].push_back(b);
         g[b].push_back(a);
     }
+    dfs(0);
+    dfs2(0);
+    cout << ans << endl;
     return 0;
 }
