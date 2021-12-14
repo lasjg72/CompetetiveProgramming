@@ -12,29 +12,22 @@
 using namespace std;
 using ll = long long;
 
-vector<vector<int>> g;
-
-int ans;
-
-
 int main()
 {
     int n;
     cin >> n;
-    g.resize(n);
-    for(int i = 0; i < n-1; i++){
-        int a, b;
-        cin >> a >> b;
-        a--; b--;
-        g[a].push_back(b);
-        g[b].push_back(a);
+    vector<int> a(n), ans(n);
+    for(int i = 0; i < n; i++){
+        cin >> a[i];
     }
-    int q;
-    cin >> q;
-    while(q--){
-        int a, b;
-        cin >> a >> b;
-        a--; b--;
+    for(int i = 0; i < n-1; i++){
+        if(a[i] > a[i+1]){
+            ans[i] ^= 1;
+            ans[i+1] ^= 1;
+        }
+    }
+    for(int i = 0; i < n; i++){
+        cout << ans[i] << endl;
     }
     return 0;
 }

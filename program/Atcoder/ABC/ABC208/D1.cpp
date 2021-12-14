@@ -13,12 +13,6 @@ using namespace std;
 using ll = long long;
 const int INF = 1001001001;
 
-struct edge{
-    int to;
-    int cost;
-    edge(int to, int cost): to(to), cost(cost){};
-};
-
 int main()
 {
     int n, m;
@@ -32,6 +26,19 @@ int main()
         g[a].push_back(b);
         d[a][b] = c;
     }
-    ll ans = 0;
+    for(int i = 0; i < n; i++){
+        d[i][i] = 0;
+    }
+    int ans = 0;
+    for(int k = 0; k < n; k++){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                d[i][j] = min(d[i][j], d[i][k]+d[k][j]);
+
+                if(d[i][j] < INF) ans += d[i][j];
+            }
+        }
+    }
+    cout << ans << endl;
     return 0;
 }

@@ -2,6 +2,7 @@
     "files.associations": {
         "vector": "cpp",
         "ostream": "cpp",
-        "cassert": "cpp"
+        "cassert": "cpp",
+        "iostream": "cpp"
     }
 }
